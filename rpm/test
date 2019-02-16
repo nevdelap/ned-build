@@ -1,0 +1,9 @@
+#!/bin/sh
+# An empty fresh centos with the artifacts mounted to test installation.
+docker container rm text-rpm
+docker run \
+    -it \
+    -v ~/ned-build/artifacts:/root/artifacts
+    --name test-rpm \
+    test-rpm \
+    /bin/bash

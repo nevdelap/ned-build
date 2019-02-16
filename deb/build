@@ -1,0 +1,3 @@
+#!/bin/sh
+docker build --target ned-deb  -t ned-deb  .
+docker build --target test-deb -t test-deb .

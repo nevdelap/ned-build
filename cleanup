@@ -1,0 +1,6 @@
+#!/bin/sh
+docker stop ned-aur  2> /dev/null
+docker stop test-aur 2> /dev/null
+docker container rm `docker container ls -aq` 2> /dev/null
+docker image     rm `docker image ls -aq`     2> /dev/null
+rm -rf artifacts/*

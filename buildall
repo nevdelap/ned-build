@@ -1,0 +1,12 @@
+#!/bin/sh
+cd aur
+./build
+./run
+cd ../deb
+./build
+./run
+cd ../rpm
+./build
+./run
+cd ..
+ls artifacts

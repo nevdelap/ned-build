@@ -1,0 +1,9 @@
+#!/bin/sh
+# An empty fresh arch with the artifacts mounted to test installation.
+docker container rm text-aur
+docker run \
+    -it \
+    -v ~/ned-build/artifacts:/root/artifacts
+    --name test-aur \
+    test-aur \
+    /bin/bash
