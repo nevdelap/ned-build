@@ -1,9 +1,13 @@
 #!/bin/sh
 # An empty fresh centos with the artifacts mounted to test installation.
-docker container rm text-rpm
 docker run \
-    -it \
-    -v ~/ned-build/artifacts:/root/artifacts
     --name test-rpm \
+    --rm \
+    -it \
+    -v ~/ned-build/artifacts:/root/artifacts \
     test-rpm \
-    /bin/bash
+    /bin/bash -c \
+        'rpm -i ned-*-1.el7.x86_64.rpm &&
+         man ned | ned -q "ned.*Powerful" &&
+         printf "\e[32mRPM OK\e[0m\n" && exit 0
+         printf "\e[31mRPM FAILED\e[0m\n" && exit 1'

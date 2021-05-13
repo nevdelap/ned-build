@@ -1,12 +1,24 @@
-#!/bin/sh
-cd aur
-./build
-./run
-cd ../deb
-./build
-./run
-cd ../rpm
-./build
-./run
-cd ..
-ls artifacts
+#!/bin/bash
+
+function exit_ok {
+    printf "\e[32m%s\e[0m\n" "$1" && exit 0
+}
+
+function die {
+    printf "\e[31mSomething FAILED\e[0m\n" && exit 1
+}
+
+if [ $# -eq 1 ] && [ "$1" == "nuke" ]; then
+    printf "\e[32mNuking the docker images.\e[0m\n"
+    docker image rm -f ned-aur test-aur ned-deb test-deb ned-rpm test-rpm || die
+fi
+
+printf "\e[32mBuilding and testing all the things.\e[0m\n"
+sudo chown -R "$(id -u)":"$(id -g)" -- *         && \
+git clean -xfd                                   && \
+git submodule foreach --recursive git clean -xfd && \
+pushd aur && ./build && ./run && ./test && popd && test -f artifacts/ned && test -f artifacts/ned.1.gz && \
+pushd deb && ./build && ./run && ./test && popd && test -f artifacts/ned_*_amd64.deb                   && \
+pushd rpm && ./build && ./run && ./test && popd && test -f artifacts/ned-*.el7.x86_64.rpm              && \
+exit_ok "All OK"
+die

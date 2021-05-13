@@ -1,9 +1,50 @@
 #!/bin/sh
 # An empty fresh arch with the artifacts mounted to test installation.
-docker container rm text-aur
+# Test the new non-binary package.
 docker run \
-    -it \
-    -v ~/ned-build/artifacts:/root/artifacts
     --name test-aur \
+    --rm \
+    -it \
+    -v ~/ned-build/aur/ned-aur:/home/build/ned-aur \
     test-aur \
-    /bin/bash
+    /bin/bash -c \
+        'sudo -u build makepkg --printsrcinfo > /tmp/.SRCINFO &&
+         diff -q .SRCINFO /tmp/.SRCINFO &&
+         sudo -u build makepkg -si --noconfirm &&
+         man ned | ned -q "ned.*Powerful" &&
+         printf "\e[32mNew AUR ned OK\e[0m\n" && exit 0
+         printf "\e[31mNew AUR ned FAILED\e[0m\n" && exit 1'
+# Test the non-binary package in the AUR currently.
+docker run \
+    --name test-aur \
+    --rm \
+    -it \
+    test-aur \
+    /bin/bash -c \
+        'sudo -u build yay -Sy ned --noconfirm &&
+         man ned | grep -q "ned.*Powerful" &&
+         printf "\e[32mExisting AUR ned OK\e[0m\n" && exit 0
+         printf "\e[31mExisting AUR ned FAILED\e[0m\n" && exit 1'
+# Test the new binary package.
+docker run \
+    --name test-aur \
+    --rm \
+    -it \
+    -v ~/ned-build/aur/ned-aur-bin:/home/build/ned-aur \
+    test-aur \
+    /bin/bash -c \
+        'sudo -u build makepkg -si --noconfirm &&
+         man ned | ned -q "ned.*Powerful" &&
+         printf "\e[32mNew AUR ned-bin OK\e[0m\n" && exit 0
+         printf "\e[31mNew AUR ned-bin FAILED\e[0m\n" && exit 1'
+# Test the binary package in the AUR currently.
+# docker run \
+#     --name test-aur \
+#     --rm \
+#     -it \
+#     test-aur \
+#     /bin/bash -c \
+#         'sudo -u build yay -Sy ned-bin --noconfirm &&
+#          man ned | grep -q "ned.*Powerful" &&
+#          printf "\e[32mExisting AUR ned-bin OK\e[0m\n" && exit 0
+#          printf "\e[31mExisting AUR ned-bin FAILED\e[0m\n" && exit 1'

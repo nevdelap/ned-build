@@ -1,6 +1,9 @@
 [submodule "aur/ned-aur"]
 	path = aur/ned-aur
 	url = git@github.com:nevdelap/ned-aur.git
+[submodule "aur/ned-aur-bin"]
+	path = aur/ned-aur-bin
+	url = git@github.com:nevdelap/ned-aur-bin.git
 [submodule "deb/ned-deb"]
 	path = deb/ned-deb
 	url = git@github.com:nevdelap/ned-deb.git

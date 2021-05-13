@@ -1,9 +1,13 @@
 #!/bin/sh
 # An empty fresh ubuntu with the artifacts mounted to test installation.
-docker container rm text-deb
 docker run \
-    -it \
-    -v ~/ned-build/artifacts:/root/artifacts
     --name test-deb \
+    --rm \
+    -it \
+    -v ~/ned-build/artifacts:/root/artifacts \
     test-deb \
-    /bin/bash
+    /bin/bash -c \
+        'dpkg -i ned_*-1_amd64.deb &&
+         man ned | ned -q "ned.*Powerful" &&
+         printf "\e[32mDeb OK\e[0m\n" && exit 0
+         printf "\e[31mDeb FAILED\e[0m\n" && exit 1'

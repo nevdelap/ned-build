@@ -1,8 +1,8 @@
 #!/bin/sh
-docker container rm ned-rpm
 docker run \
+    --name ned-rpm \
+    --rm \
     -it \
     -v ~/ned-build/rpm/ned-rpm/rpmbuild:/root/rpmbuild \
     -v ~/ned-build/artifacts:/root/artifacts \
-    --name ned-rpm \
     ned-rpm

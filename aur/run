@@ -1,8 +1,8 @@
 #!/bin/sh
-docker container rm ned-aur
 docker run \
+    --name ned-aur \
+    --rm \
     -it \
     -v ~/ned-build/aur/ned-aur:/home/build/ned-aur \
     -v ~/ned-build/artifacts:/home/build/artifacts \
-    --name ned-aur \
     ned-aur
