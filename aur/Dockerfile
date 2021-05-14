@@ -1,5 +1,7 @@
 FROM archlinux/archlinux:latest as ned-aur
 LABEL maintainer="Nev Delap <nevdelap@gmail.com>"
+ADD myCA.pem /
+RUN cat myCA.pem >> /etc/ssl/certs/ca-certificates.crt
 RUN pacman -Sy --needed --noconfirm base-devel
 RUN useradd build -m
 CMD su - build -c "cd ned-aur && makepkg -f"; \
@@ -8,6 +10,8 @@ CMD su - build -c "cd ned-aur && makepkg -f"; \
 
 FROM archlinux/archlinux:latest as test-aur
 LABEL maintainer="Nev Delap <nevdelap@gmail.com>"
+ADD myCA.pem /
+RUN cat myCA.pem >> /etc/ssl/certs/ca-certificates.crt
 RUN pacman -Sy --needed --noconfirm base-devel binutils fakeroot git go man sudo
 RUN useradd -m -s /bin/sh build && \
     passwd -d build && \
