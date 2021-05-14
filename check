@@ -1,0 +1,6 @@
+#!/bin/bash
+git log -1 && \
+pushd aur/ned-aur     && git log -1 && popd && \
+pushd aur/ned-aur-bin && git log -1 && popd && \
+pushd deb/ned-deb     && git log -1 && popd && \
+pushd rpm/ned-rpm     && git log -1 && popd

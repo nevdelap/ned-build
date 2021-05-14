@@ -1,6 +1,6 @@
 FROM archlinux/archlinux:latest as ned-aur
 LABEL maintainer="Nev Delap <nevdelap@gmail.com>"
-RUN pacman -Sy --needed --noconfirm base-devel rust
+RUN pacman -Sy --needed --noconfirm base-devel
 RUN useradd build -m
 CMD su - build -c "cd ned-aur && makepkg -f"; \
     cp /home/build/ned-aur/pkg/ned/usr/bin/ned /home/build/artifacts && \

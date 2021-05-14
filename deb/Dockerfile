@@ -2,7 +2,7 @@ FROM ubuntu:18.04 as ned-deb
 LABEL maintainer="Nev Delap <nevdelap@gmail.com>"
 RUN apt-get update && apt-get -y upgrade
 RUN apt-get install -y debhelper debmake
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 RUN . /root/.cargo/env && rustup target add x86_64-unknown-linux-musl
 WORKDIR /root/ned-deb
 CMD . ~/.cargo/env && ./bbuild && \
